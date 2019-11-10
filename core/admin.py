@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from core.models import Project
+from .models import Project
 
 
 class ProjectAdmin(admin.ModelAdmin):
