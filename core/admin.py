@@ -6,9 +6,6 @@ from django.utils.encoding import force_text
 from .models import Project, Task
 
 
-"""
-Admin Declarations
-"""
 admin.site.site_header = "Hyperion Admin"
 admin.site.site_title = "Hyperion Admin"
 admin.site.index_title = "Welcome to the Hyperion Administration section."

@@ -1,11 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from .helpers import two_weeks_from_today
 
-"""
-Project
-"""
 class Project(models.Model):
     ACTIVE = 'AC'
     COMPLETE = 'CL'
@@ -45,9 +41,7 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
-"""
-Task
-"""
+
 class Task(models.Model):
     ACTIVE = 'AC'
     COMPLETE = 'CL'
@@ -77,12 +71,3 @@ class Task(models.Model):
 
     def __str__(self):
         return self.name
-
-"""
-Followup
-"""
-class Followup(models.Model):
-    description = models.CharField(max_length=256)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followups')
-    send_date = models.DateField(default=two_weeks_from_today(), blank=False, null=False)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, blank=True, null=True)
