@@ -2,11 +2,14 @@ from django.http import HttpResponse
 from django.template import loader
 
 from .models import Project
+from .tables import ProjectTable
 
 def index(request):
-    project_list = Project.objects.order_by('-code')
     template = loader.get_template('core/index.html')
+
+    project_table = ProjectTable(Project.objects.all(), order_by='-code')
+
     context = {
-        'project_list': project_list,
+        'project_table': project_table,
     }
     return HttpResponse(template.render(context, request))

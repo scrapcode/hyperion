@@ -20,11 +20,15 @@ SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 SENDGRID_ECHO_TO_STDOUT = True
 """
 
+# django-table2 config
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
+
 # Application definition
 
 INSTALLED_APPS = [
     'grappelli',
     'bootstrap4',
+    'django_tables2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
