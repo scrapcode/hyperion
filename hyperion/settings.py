@@ -24,6 +24,7 @@ SENDGRID_ECHO_TO_STDOUT = True
 
 INSTALLED_APPS = [
     'grappelli',
+    'bootstrap4',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
