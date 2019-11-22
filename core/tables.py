@@ -9,6 +9,8 @@ from .models import Project
 class ProjectTable(tables.Table):
     class Meta:
         model = Project
-        template_name = 'django_tables2/bootstrap4.html'
-        attrs = {'class': 'table table-striped table-sm'}
+        template_name = 'core/tables.html'
+        attrs = {
+            'class': 'table table-striped table-sm table-bordered table-hover',
+        }
         fields = ("code", "name", "point_of_contact", "status", "updated")
