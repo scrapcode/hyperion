@@ -11,6 +11,10 @@ from .helpers import two_weeks_from_today
 class FollowupManager(models.Manager):
 
     def overdue(self, user=None):
+        """
+        overdue
+        Calculated as any date before timezone.now()
+        """
         today = timezone.now()
 
         if user:
@@ -18,7 +22,12 @@ class FollowupManager(models.Manager):
 
         return self.filter(send_date__lt=today, is_completed=False)
 
+
     def upcoming(self, user=None, threshold=7):
+        """
+        upcoming
+        Calculated from timezone.now() until (now + threshold) in days.
+        """
         today = timezone.now()
         threshold_date = timezone.now() + timedelta(days=threshold)
 
@@ -29,6 +38,7 @@ class FollowupManager(models.Manager):
 
 
 class Followup(models.Model):
+
     description = models.CharField(max_length=256)
     
     user = models.ForeignKey(User,
