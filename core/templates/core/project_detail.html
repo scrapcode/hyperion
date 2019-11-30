@@ -1,0 +1,90 @@
+{% extends 'core/base.html' %}
+
+{% load render_table from django_tables2 %}
+
+{% block content %}
+
+<h1><strong>{{ project.code }}</strong> - {{ project.name }}</h1>
+<table class="table table-sm table-bordered">
+    <tr>
+        <th scope="row">POC:</th>
+        <td>{{ project.point_of_contact }} (<a href="mailto:{{project.point_of_contact.email}}">{{ project.point_of_contact.email }}</a>)</td>
+    </tr>
+    <tr>
+        <th scope="row">Status:</th>
+        <td>{{ project.status }}</td>
+    </tr>
+    <tr>
+        <th scope="row">At A Glance:</th>
+        <td>Coming soon. Will show a log of all project actions.</td>
+    </tr>
+</table>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg">
+            <h3>Followups</h3>
+        </div>
+        <div class="col-sm">
+            <div class="btn-group">
+                <a class="btn btn-primary">Create Followup</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% for followup in project.followups.all %}
+<li>{{ followup.send_date }} ({{ followup.user.username }}) - {{ followup.description }}</li>
+{% empty %}
+    <div class="alert alert-secondary">
+        <p>There are currently no followups.</p>
+    </div>
+{% endfor %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg">
+            <h3>Task Backlog</h3>
+        </div>
+        <div class="col-sm">
+            <div class="btn-group">
+                <a class="btn btn-primary">Create Task</a>
+            </div>
+        </div>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Task</th>
+            <th scope="col">Description</th>
+            <th scope="col">User</th>
+            <th scope="col">Created</th>
+            <th scope="col">Updated</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for task in project.active_tasks %}
+
+        <tr>
+            <td>{{ task.name }}</td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.user.username }}</td>
+            <td>{{ task.created }}</td>
+            <td>{{ task.updated }}</td>
+        </tr>
+
+{% empty %}
+
+<div class="alert alert-secondary">
+    <p>There are currently no active tasks in the backlog.</p>
+    <p><a class="btn btn-primary" role="button">Create a task</a></p>
+</div>
+
+{% endfor %}
+    </tbody>
+</table>
+
+
+
+{% endblock %}

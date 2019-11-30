@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
+from django.views.generic import DetailView
 
 from .models import Project
 from .tables import ProjectTable
@@ -13,3 +14,7 @@ def index(request):
         'project_table': project_table,
     }
     return HttpResponse(template.render(context, request))
+
+
+class ProjectView(DetailView):
+    model = Project

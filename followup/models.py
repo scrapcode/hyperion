@@ -57,13 +57,14 @@ class Followup(models.Model):
     project = models.ForeignKey(Project,
         on_delete=models.CASCADE,
         blank=True,
-        null=True
+        null=True,
+        related_name='followups'
     )
 
     task = models.ForeignKey(Task,
         on_delete=models.SET_NULL,
         blank=True,
-        null=True
+        null=True,
     )
 
     objects = FollowupManager()

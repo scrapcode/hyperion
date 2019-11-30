@@ -4,11 +4,18 @@ from django.contrib.auth.models import User
 from enum import Enum
 
 
+def django_enum(cls):
+    # decorator to enable enums in django templates
+    cls.do_not_call_in_templates = True
+    return cls
+
+
+@django_enum
 class StatusChoices(Enum):
-    ACTIVE = 1
-    COMPLETE = 2
-    CANCELLED = 3
-    PENDING = 4
+    PENDING = "Pending"
+    ACTIVE = "Active"
+    COMPLETE = "Complete"
+    CANCELLED = "Cancelled"
 
     @classmethod
     def choices(cls):
@@ -16,6 +23,7 @@ class StatusChoices(Enum):
 
 
 class Project(models.Model):
+
     name = models.CharField(max_length=256)
     code = models.CharField(
         max_length=16,
@@ -23,7 +31,7 @@ class Project(models.Model):
         null=True
     )
     description = models.TextField(blank=True)
-    status = models.IntegerField(choices=StatusChoices.choices(), default=StatusChoices.ACTIVE)
+    status = models.CharField(max_length = 128, choices=StatusChoices.choices(), default=StatusChoices.ACTIVE)
     completion_date = models.DateField(blank=True, null=True)
     point_of_contact = models.ForeignKey(
         User,
@@ -37,6 +45,10 @@ class Project(models.Model):
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def active_tasks(self):
+        t = self.tasks.filter(status=StatusChoices.ACTIVE)
+        return t
 
     def __str__(self):
         return self.name
@@ -55,7 +67,7 @@ class Task(models.Model):
         on_delete=models.CASCADE,
         related_name='tasks'
     )
-    status = models.IntegerField(choices=StatusChoices.choices(), default=StatusChoices.PENDING)
+    status = models.CharField(max_length = 128, choices=StatusChoices.choices(), default=StatusChoices.PENDING)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
