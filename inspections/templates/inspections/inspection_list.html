@@ -1,0 +1,13 @@
+{% extends 'core/base_new.html' %}
+{% block content %}
+
+<h1>Inspections</h1>
+<ul>
+    {% for inspection in object_list %}
+        <li>{{ inspection.title }} - Next Due: {{ inspection.date_next_due }}</li>
+    {% empty %}
+        <li>No inspections to list.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
