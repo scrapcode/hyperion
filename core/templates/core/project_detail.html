@@ -4,87 +4,95 @@
 
 {% block content %}
 
-<h1><strong>{{ project.code }}</strong> - {{ project.name }}</h1>
-<table class="table table-sm table-bordered">
-    <tr>
-        <th scope="row">POC:</th>
-        <td>{{ project.point_of_contact }} (<a href="mailto:{{project.point_of_contact.email}}">{{ project.point_of_contact.email }}</a>)</td>
-    </tr>
-    <tr>
-        <th scope="row">Status:</th>
-        <td>{{ project.status }}</td>
-    </tr>
-    <tr>
-        <th scope="row">At A Glance:</th>
-        <td>Coming soon. Will show a log of all project actions.</td>
-    </tr>
-</table>
 
-<div class="container">
+<h2 class="mt-5"><strong>{{ project.code }}</strong> - {{ project.name }} {% if project.status == 'Active' %} <span class="badge badge-primary">Active</span>{% endif %}</h2>
+<p><strong>Admin:</strong> <a href="mailto:{{ project.point_of_contact.email }}">{{ project.point_of_contact.username }}</a></p>
+
+
     <div class="row">
-        <div class="col-lg">
-            <h3>Followups</h3>
+        <div class="col-md-6">
+            <!-- General Log Entries -->
+            <div class="card mb-3">
+                <div class="card-header container-fluid">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <h5 class="w-75">Log Entries</h5>
+                        </div>
+                        <div class="col-md-2 float-right">
+                            <a href="#" class="btn btn-dark btn-sm float-right">+</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <!-- Table in a card body -->
+                    <table class="table">
+                        <tr>
+                        <td>11/30/19</td>
+                        <td>This is an example log entry yay.</td>
+                        </tr>
+                        <tr>
+                        <td>11/31/19</td>
+                        <td>This is an example log entry yay.</td>
+                        </tr>
+                        <tr>
+                        <td>11/32/19</td>
+                        <td>This is an example log entry yay.</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- /.logentries -->
+            
         </div>
-        <div class="col-sm">
-            <div class="btn-group">
-                <a class="btn btn-primary">Create Followup</a>
+        <div class="col-md-6">
+            <!-- Followups -->
+            <div class="card mb-3">
+                <div class="card-header container-fluid">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <h5 class="w-75">Followups</h5>
+                        </div>
+                        <div class="col-md-2 float-right">
+                            <a href="#" class="btn btn-dark btn-sm float-right">+</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table">
+                        {% for followup in project.followups.all %}
+                        <tr>
+                            <td>{{ followup.send_date }}</td>
+                            <td>{{ followup.description }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2" class="card-text">
+                                Currently no scheduled followups.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tasks -->
+            <div class="card mb-3">
+                <div class="card-header container-fluid">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <h5 class="w-75">Log Entries</h5>
+                        </div>
+                        <div class="col-md-2 float-right">
+                            <a href="#" class="btn btn-dark btn-sm float-right">+</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    Card Body
+                </div>
             </div>
         </div>
     </div>
-</div>
-{% for followup in project.followups.all %}
-<li>{{ followup.send_date }} ({{ followup.user.username }}) - {{ followup.description }}</li>
-{% empty %}
-    <div class="alert alert-secondary">
-        <p>There are currently no followups.</p>
-    </div>
-{% endfor %}
-
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg">
-            <h3>Task Backlog</h3>
-        </div>
-        <div class="col-sm">
-            <div class="btn-group">
-                <a class="btn btn-primary">Create Task</a>
-            </div>
-        </div>
-    </div>
-</div>
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Task</th>
-            <th scope="col">Description</th>
-            <th scope="col">User</th>
-            <th scope="col">Created</th>
-            <th scope="col">Updated</th>
-        </tr>
-    </thead>
-    <tbody>
-{% for task in project.active_tasks %}
-
-        <tr>
-            <td>{{ task.name }}</td>
-            <td>{{ task.description }}</td>
-            <td>{{ task.user.username }}</td>
-            <td>{{ task.created }}</td>
-            <td>{{ task.updated }}</td>
-        </tr>
-
-{% empty %}
-
-<div class="alert alert-secondary">
-    <p>There are currently no active tasks in the backlog.</p>
-    <p><a class="btn btn-primary" role="button">Create a task</a></p>
-</div>
-
-{% endfor %}
-    </tbody>
-</table>
-
 
 
 {% endblock %}
