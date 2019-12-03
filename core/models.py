@@ -1,5 +1,7 @@
 from django.db import models
+from django.urls.base import reverse
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 from enum import Enum
 
@@ -45,10 +47,18 @@ class Project(models.Model):
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(unique=True, blank=False, null=False)
 
     def active_tasks(self):
         t = self.tasks.filter(status=StatusChoices.ACTIVE)
         return t
+
+    def get_absolute_url(self):
+        return reverse("project_detail", kwargs={"slug": self.slug})
+    
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        self.slug = slugify(self.code)
+        return super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
 
     def __str__(self):
         return self.name

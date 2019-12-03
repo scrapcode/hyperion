@@ -8,10 +8,10 @@ from .tables import ProjectTable
 def index(request):
     template = loader.get_template('core/index.html')
 
-    project_table = ProjectTable(Project.objects.all(), order_by='-code')
+    projects = Project.objects.all()
 
     context = {
-        'project_table': project_table,
+        'projects': projects,
     }
     return HttpResponse(template.render(context, request))
 

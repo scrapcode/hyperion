@@ -1,20 +1,39 @@
 {% extends 'core/base.html' %}
 
-{% load render_table from django_tables2 %}
-
 {% block content %}
 
 
-{% if project_table %}
+{% if projects %}
 
-    <h1>Projects</h1>
-    <div class="table-responsive">
-        {% render_table project_table %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Projects</h2>
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Point of Contact</th>
+                <th>Status</th>
+                <th>Updated</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for project in projects %}
+            <tr>
+                <td><a href="{{ project.get_absolute_url }}">{{ project.code }}</a></td>
+                <td><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></td>
+                <td>{{ project.point_of_contact }}</td>
+                <td>{{ project.status }}</td>
+                <td>{{ project.updated }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
+</div>
 
 {% else %}
-
-    <p>There are currently no projects to list.</p>
 
 {% endif %}
 
