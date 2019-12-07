@@ -61,33 +61,12 @@
                 </div>
                 <div class="card-body p-0">
                     <table class="table">
-                        {% for followup in project.followups.all %}
-                        <tr>
-                            <td>{{ followup.send_date }}</td>
-                            <td>{{ followup.description }}</td>
-                        </tr>
-                        {% empty %}
                         <tr>
                             <td colspan="2" class="card-text">
-                                <h5>Overdue:</h5>
-                                <ul>
-                                    <li>12/01/19 12:00PM - Carol at MEI Elevator, Inc.</li>
-                                </ul>
                                 
-                                <h5>Upcoming:</h5>
-                                <ul>
-                                    <li>12/05/19 12:00PM - Ben at Gronis Hardware</li>
-                                </ul>
-
-                                <h5>All:</h5>
-                                <ul>
-                                    <li>12/01/19 12:00PM - Carol at MEI Elevator, Inc.</li>
-                                    <li>12/01/19 12:00PM - Carol at MEI Elevator, Inc.</li>
-                                    <li>12/01/19 12:00PM - Carol at MEI Elevator, Inc.</li>
-                                </ul>
+                                <!-- Removed followups as it's own entity. Will use Tasks -->
                             </td>
                         </tr>
-                        {% endfor %}
                     </table>
                 </div>
             </div>

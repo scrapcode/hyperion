@@ -78,8 +78,17 @@ class Task(models.Model):
         related_name='tasks'
     )
     status = models.CharField(max_length = 128, choices=StatusChoices.choices(), default=StatusChoices.PENDING)
+    followup_to = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        related_name="followups",
+        null=True
+    )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def is_followup(self):
+        return self.followup_to is not None
 
     def __str__(self):
         return self.name
