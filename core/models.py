@@ -1,19 +1,24 @@
+from enum import Enum
+
 from django.db import models
 from django.urls.base import reverse
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 
-from enum import Enum
-
 
 def django_enum(cls):
-    # decorator to enable enums in django templates
+    """
+    decorator to enable enums in django templates
+    """
     cls.do_not_call_in_templates = True
     return cls
 
 
 @django_enum
 class StatusChoices(Enum):
+    """
+    Provides a nice way of allowing choices in the status field.
+    """
     PENDING = "Pending"
     ACTIVE = "Active"
     COMPLETE = "Complete"
@@ -25,7 +30,10 @@ class StatusChoices(Enum):
 
 
 class Project(models.Model):
-
+    """
+    The base model for all projects. Projects can be used for explicit project or
+    as groups for generic but related Tasks.
+    """
     name = models.CharField(max_length=256)
     code = models.CharField(
         max_length=16,
@@ -65,6 +73,10 @@ class Project(models.Model):
 
 
 class Task(models.Model):
+    """
+    The base model for all Tasks. Tasks can be standalone or belong to a project.
+    Tasks can be followups to parent tasks.
+    """
     name = models.CharField(max_length=256)
     description = models.TextField(blank=False)
     user = models.ForeignKey(
@@ -75,7 +87,9 @@ class Task(models.Model):
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE,
-        related_name='tasks'
+        related_name='tasks',
+        blank=True,
+        null=True
     )
     status = models.CharField(max_length = 128, choices=StatusChoices.choices(), default=StatusChoices.PENDING)
     followup_to = models.ForeignKey(

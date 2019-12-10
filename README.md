@@ -1,5 +1,6 @@
 # hyperion
-The Titan of Watchfullness and Wisdom
+##The Titan of Watchfullness and Wisdom
+A project and asset time management application to keep everything on track.
 
 ### Tech used
 * Python 3.8.0
