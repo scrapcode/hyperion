@@ -7,8 +7,7 @@ from django.utils.text import slugify
 
 
 def django_enum(cls):
-    """
-    decorator to enable enums in django templates
+    """ Decorator to enable enums in django templates
     """
     cls.do_not_call_in_templates = True
     return cls
@@ -16,8 +15,7 @@ def django_enum(cls):
 
 @django_enum
 class StatusChoices(Enum):
-    """
-    Provides a nice way of allowing choices in the status field.
+    """ Provides a nice way of allowing choices in the status field.
     """
     PENDING = "Pending"
     ACTIVE = "Active"
@@ -28,10 +26,15 @@ class StatusChoices(Enum):
     def choices(cls):
         return [(key.value, key.name) for key in cls]
 
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
 
 class Project(models.Model):
-    """
-    The base model for all projects. Projects can be used for explicit project or
+    """ The base model for all projects. Projects can be used for explicit project or
     as groups for generic but related Tasks.
     """
     name = models.CharField(max_length=256)
@@ -57,8 +60,9 @@ class Project(models.Model):
     updated = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True, blank=False, null=False)
 
+    @property
     def active_tasks(self):
-        t = self.tasks.filter(status=StatusChoices.ACTIVE)
+        t = self.tasks.filter(status=StatusChoices.ACTIVE.value)
         return t
 
     def get_absolute_url(self):
@@ -73,8 +77,7 @@ class Project(models.Model):
 
 
 class Task(models.Model):
-    """
-    The base model for all Tasks. Tasks can be standalone or belong to a project.
+    """ The base model for all Tasks. Tasks can be standalone or belong to a project.
     Tasks can be followups to parent tasks.
     """
     name = models.CharField(max_length=256)

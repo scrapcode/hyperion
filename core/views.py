@@ -15,6 +15,15 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
+def project_index(request):
+    template = loader.get_template('core/project_index.html')
+    projects = Project.objects.all()
+
+    context = {
+        'projects': projects,
+    }
+    return HttpResponse(template.render(context, request))
+
 
 class ProjectView(DetailView):
     model = Project

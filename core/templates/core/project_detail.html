@@ -76,7 +76,7 @@
                 <div class="card-header container-fluid">
                     <div class="row">
                         <div class="col-md-10">
-                            <h5 class="w-75">Tasks</h5>
+                            <h5 class="w-75">Active Tasks</h5>
                         </div>
                         <div class="col-md-2 float-right">
                             <a href="#" class="btn btn-dark btn-sm float-right">+</a>
@@ -84,7 +84,12 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    Card Body
+                    <!-- Tasks Display -->
+                    <ul>
+                    {% for task in project.active_tasks %}
+                        <li>{{ task.name }}</li>
+                    {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
