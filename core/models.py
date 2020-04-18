@@ -24,6 +24,8 @@ class StatusChoices(Enum):
 
     @classmethod
     def choices(cls):
+        """Returns all options in the StatusChoices enum
+        """
         return [(key.value, key.name) for key in cls]
 
     def __repr__(self):
@@ -44,7 +46,9 @@ class Project(models.Model):
         null=True
     )
     description = models.TextField(blank=True)
-    status = models.CharField(max_length = 128, choices=StatusChoices.choices(), default=StatusChoices.ACTIVE)
+    status = models.CharField(max_length=128,
+                              choices=StatusChoices.choices(),
+                              default=StatusChoices.ACTIVE)
     completion_date = models.DateField(blank=True, null=True)
     point_of_contact = models.ForeignKey(
         User,
@@ -62,15 +66,22 @@ class Project(models.Model):
 
     @property
     def active_tasks(self):
-        t = self.tasks.filter(status=StatusChoices.ACTIVE.value)
-        return t
+        """Returns all project tasks with a status of 'Active'
+        """
+        active_tasks = self.tasks.filter(status=StatusChoices.ACTIVE.value)
+        return active_tasks
 
     def get_absolute_url(self):
+        """Return the URL to the Project's details page.
+        """
         return reverse("project_detail", kwargs={"slug": self.slug})
-    
+
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         self.slug = slugify(self.code)
-        return super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
+        return super().save(force_insert=force_insert,
+                            force_update=force_update,
+                            using=using,
+                            update_fields=update_fields)
 
     def __str__(self):
         return self.name
@@ -94,7 +105,9 @@ class Task(models.Model):
         blank=True,
         null=True
     )
-    status = models.CharField(max_length = 128, choices=StatusChoices.choices(), default=StatusChoices.PENDING)
+    status = models.CharField(max_length=128,
+                              choices=StatusChoices.choices(),
+                              default=StatusChoices.PENDING)
     followup_to = models.ForeignKey(
         'self',
         on_delete=models.CASCADE,
@@ -105,6 +118,8 @@ class Task(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def is_followup(self):
+        """Returns True if this Task is a followup to another Task.
+        """
         return self.followup_to is not None
 
     def __str__(self):
