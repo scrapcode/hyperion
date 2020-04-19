@@ -68,7 +68,7 @@ class Project(models.Model):
     def active_tasks(self):
         """Returns all project tasks with a status of 'Active'
         """
-        active_tasks = self.tasks.filter(status=StatusChoices.ACTIVE.value)
+        active_tasks = self.tasks.filter(status=StatusChoices.ACTIVE.value).order_by('-created')
         return active_tasks
 
     def get_absolute_url(self):
